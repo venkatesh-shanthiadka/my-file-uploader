@@ -9,7 +9,7 @@ app.use(busboy({
 })); // Insert the busboy middle-ware
 
 
-const uploadPath = path.join(__dirname, 'uploads-dir/'); // Register the upload path
+const uploadPath = path.join('/tmp/upload-dir'); // Register the upload path
 fs.ensureDir(uploadPath); // Make sure that he upload path exits
 
 
@@ -23,7 +23,7 @@ app.post('/api/upload', (req, res) => {
     req.pipe(req.busboy); // Pipe it trough busboy
 
     req.busboy.on('file', (fieldname, file, filename) => {
-        console.log(`Upload of '${filename}' started`);
+        console.log(`Upload of '${filename.filename}' started`);
 
         // Create a write stream of the new file
         const fstream = fs.createWriteStream(path.join(uploadPath, filename.filename));
@@ -31,18 +31,19 @@ app.post('/api/upload', (req, res) => {
         file.pipe(fstream);
 
         // On finish of the upload
+
+        fstream.on('error', () => {
+            console.error(`Failed to upload '${filename.filename}'`);
+            res.status(500).json("Upload stream failed")
+        });
+
         fstream.on('close', () => {
-            console.log(`Upload of '${filename.filename}' finished`);
-            // res.redirect('/');
-            console.log('Upload stream close')
+            console.log(`Upload of '${filename.filename}' stream close`);
             res.status(200).json("Upload stream closed")
         });
 
         fstream.on('finish', () => {
             console.log(`Upload of '${filename.filename}' finished`);
-            // res.redirect('/');
-            console.log('Upload stream finish')
-            res.status(200).json("Upload stream finish")
         });
 
     });

@@ -1,8 +1,7 @@
-FROM node:18-buster
+FROM node:18-alpine
 
 # Create app directory
-RUN apt update -y
-RUN apt install htop -y
+RUN apk update 
 
 WORKDIR /workdir
 RUN npm i -g nodemon
