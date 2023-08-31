@@ -1,19 +1,20 @@
-FROM node:18
+FROM node:18-buster
 
 # Create app directory
+RUN apt update -y
+RUN apt install htop -y
+
 WORKDIR /workdir
+RUN npm i -g nodemon
 
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
-# COPY package*.json ./
+COPY package*.json ./
 
-# RUN npm install
-# If you are building your code for production
-# RUN npm ci --omit=dev
+RUN npm install
 
-# Bundle app source
-# COPY . .
+RUN npm ci --omit=dev
 
-EXPOSE 3200
-CMD [ "npm", "start" ]
+COPY . .
+
+ENV PORT=31100
+EXPOSE 31100
+CMD [ "nodemon", "index.js" ]
