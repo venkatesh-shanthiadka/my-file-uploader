@@ -17,6 +17,33 @@ app.get('/', (req, res) => {
     res.send('Hello World');
 })
 
+app.get('/api/files', (req, res) => {
+    // fs.readdir(uploadPath, (err, files) => {
+    //     files.forEach(file => {
+    //         console.log(file);
+    //     });
+    // });
+    fs.readdir(uploadPath, (err, files) => {
+        try {
+            files = files.map(function (fileName) {
+                return {
+                    name: fileName,
+                    time: fs.statSync(path.join(uploadPath, fileName)).mtime.getTime()
+                };
+            })
+                .sort(function (a, b) {
+                    return b.time - a.time;
+                })
+                .map(function (v) {
+                    return v.name;
+                });
+            res.status(200).json({ files });
+        } catch (error) {
+            res.status(500).json({ message: error?.message });
+        }
+    })
+})
+
 
 app.post('/api/upload', (req, res) => {
     try {

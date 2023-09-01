@@ -11,6 +11,6 @@ COPY package*.json ./
 RUN npm install --verbose
 
 
-ENV PORT=31100
-EXPOSE 31100
-CMD [ "nodemon", "index.js" ]
+ENV PORT=31101
+EXPOSE 31101
+# CMD [ "nodemon", "index.js" ]
