@@ -19,34 +19,46 @@ app.get('/', (req, res) => {
 
 
 app.post('/api/upload', (req, res) => {
+    try {
 
-    req.pipe(req.busboy); // Pipe it trough busboy
+        if (!req.busboy) throw Error("Empty file received!!")
+        req.pipe(req.busboy); // Pipe it trough busboy
 
-    req.busboy.on('file', (fieldname, file, filename) => {
-        console.log(`Upload of '${filename.filename}' started`);
+        req.busboy.on('file', (fieldname, file, filename) => {
+            try {
+                console.log(`Upload of '${filename.filename}' started`);
 
-        // Create a write stream of the new file
-        const fstream = fs.createWriteStream(path.join(uploadPath, filename.filename));
-        // Pipe it trough
-        file.pipe(fstream);
+                // Create a write stream of the new file
+                const fstream = fs.createWriteStream(path.join(uploadPath, filename.filename));
+                // Pipe it trough
+                file.pipe(fstream);
 
-        // On finish of the upload
 
-        fstream.on('error', () => {
-            console.error(`Failed to upload '${filename.filename}'`);
-            res.status(500).json("Upload stream failed")
+                fstream.on('error', () => {
+                    console.error(`Failed to upload '${filename.filename}'`);
+                    res.status(500).json({ message: "Upload stream failed" })
+                });
+
+                fstream.on('close', () => {
+                    console.log(`Upload of '${filename.filename}' stream close`);
+                    res.status(200).json({ message: "Upload stream closed" })
+                });
+
+                fstream.on('finish', () => {
+                    console.log(`Upload of '${filename.filename}' finished`);
+                });
+            } catch (error) {
+                console.error(`Failed to upload '${filename?.filename}'`);
+                res.status(500).json({ message: error?.message })
+            }
+
         });
+    } catch (error) {
+        console.error(`Failed before receiving the file. May be file is empty`);
+        res.status(500).json({ message: error?.message })
+    }
 
-        fstream.on('close', () => {
-            console.log(`Upload of '${filename.filename}' stream close`);
-            res.status(200).json("Upload stream closed")
-        });
 
-        fstream.on('finish', () => {
-            console.log(`Upload of '${filename.filename}' finished`);
-        });
-
-    });
 });
 
 const server = app.listen(process.env.PORT || 3200, function () {
