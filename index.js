@@ -17,12 +17,33 @@ app.get('/', (req, res) => {
     res.send('Hello World');
 })
 
+app.get('/videos', (req, res) => {
+    res.sendFile(path.resolve(__dirname, "views", "videos.html"));
+})
+
+app.get('/videoplayer', (req, res) => {
+    const range = req.headers.range
+    const videoPath = path.resolve(uploadPath, "1_1 Sync _ _ Microsoft Teams 2023-06-29 10-00-01", "1_1 Sync _ _ Microsoft Teams 2023-06-29 10-00-01.mp4");
+    const videoSize = fs.statSync(videoPath).size
+    const chunkSize = 1 * 1e6;
+    const start = Number(range.replace(/\D/g, ""))
+    const end = Math.min(start + chunkSize, videoSize - 1)
+    const contentLength = end - start + 1;
+    const headers = {
+        "Content-Range": `bytes ${start}-${end}/${videoSize}`,
+        "Accept-Ranges": "bytes",
+        "Content-Length": contentLength,
+        "Content-Type": "video/mp4"
+    }
+    res.writeHead(206, headers)
+    const stream = fs.createReadStream(videoPath, {
+        start,
+        end
+    })
+    stream.pipe(res)
+})
+
 app.get('/api/files', (req, res) => {
-    // fs.readdir(uploadPath, (err, files) => {
-    //     files.forEach(file => {
-    //         console.log(file);
-    //     });
-    // });
     fs.readdir(uploadPath, (err, files) => {
         try {
             files = files.map(function (fileName) {
