@@ -5,7 +5,7 @@ const fs = require('fs-extra');
 
 const app = express(); // Initialize the express web server
 
-app.use(express.static('public'))
+app.use(express.static(path.join(__dirname, 'client', 'build')))
 app.use(busboy({
   highWaterMark: 2 * 1024 * 1024, // Set 2MiB buffer
 })); // Insert the busboy middle-ware

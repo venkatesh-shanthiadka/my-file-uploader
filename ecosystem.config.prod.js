@@ -1,16 +1,10 @@
 module.exports = {
-    apps: [
-        {
-            name: "client",
-            cwd: "./client",
-            script: "npm",
-            args: "start",
-        },
-        {
-            name: "server",
-            cwd: "./",
-            script: "npm",
-            args: "start",
-        }
-    ]
-}
+  apps: [
+    {
+      name: "prod-server",
+      script: "index.js",
+      instances: 2,
+      exec_mode: "cluster",
+    }
+  ]
+} 

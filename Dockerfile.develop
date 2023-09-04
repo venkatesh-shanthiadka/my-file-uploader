@@ -4,13 +4,14 @@ FROM node:18-buster
 RUN apt update -y
 
 WORKDIR /workdir
-RUN npm i -g nodemon
+RUN npm i -g pm2
 
 COPY package*.json ./
 
 RUN npm install --verbose
+RUN cd client && npm install --verbose
 
 
 ENV PORT=31101
 EXPOSE 31101
-# CMD [ "nodemon", "index.js" ]
+EXPOSE 31102
