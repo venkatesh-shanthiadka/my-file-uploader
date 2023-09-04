@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --inspect=7000 index.js"
+    "start": "PORT=31102 && node --inspect=7000 index.js"
   },
   "keywords": [],
   "author": "",

@@ -4,8 +4,10 @@ const path = require('path');               // Used for manipulation with path
 const fs = require('fs-extra');
 
 const app = express(); // Initialize the express web server
+
+app.use(express.static('public'))
 app.use(busboy({
-    highWaterMark: 2 * 1024 * 1024, // Set 2MiB buffer
+  highWaterMark: 2 * 1024 * 1024, // Set 2MiB buffer
 })); // Insert the busboy middle-ware
 
 
@@ -13,102 +15,95 @@ const uploadPath = path.join('/tmp/upload-dir'); // Register the upload path
 fs.ensureDir(uploadPath); // Make sure that he upload path exits
 
 
-app.get('/', (req, res) => {
-    res.send('Hello World');
-})
-
-app.get('/videos', (req, res) => {
-    res.sendFile(path.resolve(__dirname, "views", "videos.html"));
-})
-
-app.get('/videoplayer', (req, res) => {
-    const range = req.headers.range
-    const videoPath = path.resolve(uploadPath, "1_1 Sync _ _ Microsoft Teams 2023-06-29 10-00-01", "1_1 Sync _ _ Microsoft Teams 2023-06-29 10-00-01.mp4");
-    const videoSize = fs.statSync(videoPath).size
-    const chunkSize = 1 * 1e6;
-    const start = Number(range.replace(/\D/g, ""))
-    const end = Math.min(start + chunkSize, videoSize - 1)
-    const contentLength = end - start + 1;
-    const headers = {
-        "Content-Range": `bytes ${start}-${end}/${videoSize}`,
-        "Accept-Ranges": "bytes",
-        "Content-Length": contentLength,
-        "Content-Type": "video/mp4"
-    }
-    res.writeHead(206, headers)
-    const stream = fs.createReadStream(videoPath, {
-        start,
-        end
-    })
-    stream.pipe(res)
+app.get('/api/videoplayer/:fileName', (req, res) => {
+  const fileName = req.params.fileName
+  const range = req.headers.range
+  const videoPath = path.resolve(uploadPath, fileName);
+  const videoSize = fs.statSync(videoPath).size
+  const chunkSize = 1 * 1e6;
+  const start = Number(range.replace(/\D/g, ""))
+  const end = Math.min(start + chunkSize, videoSize - 1)
+  const contentLength = end - start + 1;
+  const headers = {
+    "Content-Range": `bytes ${start}-${end}/${videoSize}`,
+    "Accept-Ranges": "bytes",
+    "Content-Length": contentLength,
+    "Content-Type": "video/mp4"
+  }
+  res.writeHead(206, headers)
+  const stream = fs.createReadStream(videoPath, {
+    start,
+    end
+  })
+  stream.pipe(res)
 })
 
 app.get('/api/files', (req, res) => {
-    fs.readdir(uploadPath, (err, files) => {
-        try {
-            files = files.map(function (fileName) {
-                return {
-                    name: fileName,
-                    time: fs.statSync(path.join(uploadPath, fileName)).mtime.getTime()
-                };
-            })
-                .sort(function (a, b) {
-                    return b.time - a.time;
-                })
-                .map(function (v) {
-                    return v.name;
-                });
-            res.status(200).json({ files });
-        } catch (error) {
-            res.status(500).json({ message: error?.message });
-        }
-    })
+  fs.readdir(uploadPath, (err, files) => {
+    try {
+      files = files.map(function (fileName) {
+        return {
+          name: fileName,
+          time: fs.statSync(path.join(uploadPath, fileName)).mtime.getTime()
+        };
+      })
+        .sort(function (a, b) {
+          return b.time - a.time;
+        })
+        .map(function (v) {
+          return { name: v.name };
+        });
+      res.status(200).json({ files });
+    } catch (error) {
+      res.status(500).json({ message: error?.message });
+    }
+  })
 })
 
 
 app.post('/api/upload', (req, res) => {
-    try {
+  try {
 
-        if (!req.busboy) throw Error("Empty file received!!")
-        req.pipe(req.busboy); // Pipe it trough busboy
+    if (!req.busboy) throw Error("Empty file received!!")
+    req.pipe(req.busboy); // Pipe it trough busboy
 
-        req.busboy.on('file', (fieldname, file, filename) => {
-            try {
-                console.log(`Upload of '${filename.filename}' started`);
+    req.busboy.on('file', (fieldname, file, filename) => {
+      try {
+        console.log(`Upload of '${filename.filename}' started`);
 
-                // Create a write stream of the new file
-                const fstream = fs.createWriteStream(path.join(uploadPath, filename.filename));
-                // Pipe it trough
-                file.pipe(fstream);
+        // Create a write stream of the new file
+        const fstream = fs.createWriteStream(path.join(uploadPath, filename.filename));
+        // Pipe it trough
+        file.pipe(fstream);
 
 
-                fstream.on('error', () => {
-                    console.error(`Failed to upload '${filename.filename}'`);
-                    res.status(500).json({ message: "Upload stream failed" })
-                });
-
-                fstream.on('close', () => {
-                    console.log(`Upload of '${filename.filename}' stream close`);
-                    res.status(200).json({ message: "Upload stream closed" })
-                });
-
-                fstream.on('finish', () => {
-                    console.log(`Upload of '${filename.filename}' finished`);
-                });
-            } catch (error) {
-                console.error(`Failed to upload '${filename?.filename}'`);
-                res.status(500).json({ message: error?.message })
-            }
-
+        fstream.on('error', () => {
+          console.error(`Failed to upload '${filename.filename}'`);
+          res.status(500).json({ message: "Upload stream failed" })
         });
-    } catch (error) {
-        console.error(`Failed before receiving the file. May be file is empty`);
+
+        fstream.on('close', () => {
+          console.log(`Upload of '${filename.filename}' stream close`);
+          res.status(200).json({ message: "Upload stream closed" })
+        });
+
+        fstream.on('finish', () => {
+          console.log(`Upload of '${filename.filename}' finished`);
+        });
+      } catch (error) {
+        console.error(`Failed to upload '${filename?.filename}'`);
         res.status(500).json({ message: error?.message })
-    }
+      }
+
+    });
+  } catch (error) {
+    console.error(`Failed before receiving the file. May be file is empty`);
+    res.status(500).json({ message: error?.message })
+  }
 
 
 });
 
 const server = app.listen(process.env.PORT || 3200, function () {
-    console.log(`Listening on port ${server.address().port}`);
+  console.log(`Listening on port ${server.address().port}`);
 });

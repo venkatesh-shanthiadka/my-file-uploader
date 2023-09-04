@@ -1,0 +1,34 @@
+* {
+    box-sizing: border-box;
+}
+
+body{
+    background-color: grey;
+}
+
+.file-name-div-container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.file-name-div {
+    margin: 5px;
+    padding: 1px;
+    cursor: pointer;
+    display: flex;
+    box-shadow: 2px 2px 2px black;
+    align-items: center;
+}
+
+.file-name-div .title{
+    display: flex;
+    /* justify-content: center;
+    align-items: center; */
+    flex: 1;
+    padding: 10px;
+}
+
+.file-name-div video {
+    width: 100%;
+}
