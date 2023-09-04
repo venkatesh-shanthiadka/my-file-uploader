@@ -2,7 +2,7 @@
     box-sizing: border-box;
 }
 
-body{
+body {
     background-color: grey;
 }
 
@@ -21,7 +21,7 @@ body{
     align-items: center;
 }
 
-.file-name-div .title{
+.file-name-div .title {
     display: flex;
     /* justify-content: center;
     align-items: center; */
@@ -31,4 +31,12 @@ body{
 
 .file-name-div video {
     width: 100%;
+}
+
+.video-item-button-group {
+    margin: 10px;
+}
+
+.video-item-button-group button {
+    margin: 0px 10px;
 }

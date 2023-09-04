@@ -2,6 +2,7 @@ const express = require('express');         // Express Web Server
 const busboy = require('connect-busboy');   // Middleware to handle the file upload https://github.com/mscdex/connect-busboy
 const path = require('path');               // Used for manipulation with path
 const fs = require('fs-extra');
+const extract = require('extract-zip')
 
 const app = express(); // Initialize the express web server
 
@@ -100,8 +101,31 @@ app.post('/api/upload', (req, res) => {
     console.error(`Failed before receiving the file. May be file is empty`);
     res.status(500).json({ message: error?.message })
   }
+});
 
+app.get('/api/unzip/:filename', async (req, res) => {
+  try {
+    const fileName = req.params.filename;
+    console.log('unzip request received fileName: ', fileName)
+    await extract(path.join(uploadPath, fileName), { dir: uploadPath })
+    res.status(200).json({ message: "Unzip success" })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ message: error?.message })
+  }
+});
 
+app.delete('/api/delete/:filename', async (req, res) => {
+  try {
+    const fileName = req.params.filename;
+    console.log('Delete request received fileName: ', fileName)
+    const filePath = path.join(uploadPath, fileName); 
+    fs.unlinkSync(filePath);
+    res.status(200).json({ message: "Delete success" })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ message: error?.message })
+  }
 });
 
 const server = app.listen(process.env.PORT || 3200, function () {
