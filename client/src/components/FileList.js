@@ -22,12 +22,12 @@ function FileList() {
     <div className='file-name-div-container'>
       {
         filesList.map((file, index) => {
-          const urlPath = `/video/${encodeURIComponent(file.name)}`;
+          const urlPath = `/#/video/${encodeURIComponent(file.name)}`;
           return (
-            <div className='file-name-div' key={file.name} onClick={() => navigate(urlPath)}>
+            <a className='file-name-div' href={urlPath} target="_blank"  >
               <span>{filesList.length - index}</span>
               <div className='title'>{file.name}</div>
-            </div>
+            </a>
           )
         })
       }

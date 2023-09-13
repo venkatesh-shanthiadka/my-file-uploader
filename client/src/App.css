@@ -19,6 +19,15 @@ body {
     display: flex;
     box-shadow: 2px 2px 2px black;
     align-items: center;
+    color: black;
+}
+
+.file-name-div-container a:visited {
+    color: #060235
+}
+
+.file-name-div-container a:hover {
+    color: #FCFC0C
 }
 
 .file-name-div .title {
