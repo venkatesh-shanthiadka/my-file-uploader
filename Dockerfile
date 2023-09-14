@@ -11,7 +11,7 @@ COPY package*.json ./
 RUN npm ci --omit=dev
 
 COPY . .
-RUN cd client && npm ci --omit=dev && npm run build
+RUN cd client && npm ci --omit=dev && npm run build && cd ..
 
 COPY ecosystem.config.prod.js ecosystem.config.js
 ENV PORT=31100

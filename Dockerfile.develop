@@ -9,7 +9,8 @@ RUN npm i -g pm2
 COPY package*.json ./
 
 RUN npm install --verbose
-RUN cd client && npm install --verbose
+COPY . .
+RUN cd client && npm install --verbose && cd ..
 
 
 ENV PORT=31101
