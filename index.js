@@ -13,8 +13,14 @@ app.use(busboy({
 
 
 const uploadPath = path.join('/tmp/upload-dir'); // Register the upload path
+const inputPath = path.join('/tmp/input-dir'); // Register the upload path
 fs.ensureDir(uploadPath); // Make sure that he upload path exits
+fs.ensureDir(inputPath); // Make sure that he upload path exits
 
+const typeObj = {
+  input: inputPath,
+  output: uploadPath
+}
 
 app.get('/api/videoplayer/:fileName', (req, res) => {
   const fileName = req.params.fileName
@@ -37,29 +43,36 @@ app.get('/api/videoplayer/:fileName', (req, res) => {
     end
   })
   stream.pipe(res)
-})
+});
 
-app.get('/api/files', (req, res) => {
-  fs.readdir(uploadPath, (err, files) => {
-    try {
-      files = files.map(function (fileName) {
-        return {
-          name: fileName,
-          time: fs.statSync(path.join(uploadPath, fileName)).mtime.getTime()
-        };
-      })
-        .sort(function (a, b) {
-          return b.time - a.time;
+
+app.get('/api/files/:pathtype', (req, res) => {
+  try {
+    const { pathtype } = req.params;
+    if (!typeObj[pathtype]) throw Error('Invalid pathtype!!');
+    fs.readdir(typeObj[pathtype], (err, files) => {
+      try {
+        files = files.map(function (fileName) {
+          return {
+            name: fileName,
+            time: fs.statSync(path.join(typeObj[pathtype], fileName)).mtime.getTime()
+          };
         })
-        .map(function (v) {
-          return { name: v.name };
-        });
-      res.status(200).json({ files });
-    } catch (error) {
-      res.status(500).json({ message: error?.message });
-    }
-  })
-})
+          .sort(function (a, b) {
+            return b.time - a.time;
+          })
+          .map(function (v) {
+            return { name: v.name };
+          });
+        res.status(200).json({ files });
+      } catch (error) {
+        res.status(500).json({ message: error?.message });
+      }
+    })
+  } catch (error) {
+    res.status(400).json({ message: error?.message });
+  }
+});
 
 
 app.post('/api/upload', (req, res) => {

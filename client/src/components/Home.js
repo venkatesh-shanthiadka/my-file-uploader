@@ -1,9 +1,11 @@
 import React from 'react'
-import FileList from './FileList'
 
 function Home() {
   return (
-    <FileList />
+    <div>
+      <a href="/#/files/input">input</a>
+      <a href="/#/files/output">output</a>
+    </div>
   )
 }
 
