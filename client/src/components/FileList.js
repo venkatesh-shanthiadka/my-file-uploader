@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import FileItem from './FileItem';
+import VideoItem from './VideoItem';
 
 function FileList() {
 
   const [filesList, setFilesList] = useState([]);
-  let { pathtype } = useParams();
+  let { pathtype, fileindex } = useParams();
 
   useEffect(() => {
     fetchFiles();
@@ -19,19 +21,32 @@ function FileList() {
 
 
   return (
-    <div className='file-name-div-container'>
-      {
-        filesList.map((file, index) => {
-          const urlPath = `/#/video/${encodeURIComponent(file.name)}`;
-          return (
-            <a className='file-name-div' href={urlPath} target="_blank"  >
-              <span>{filesList.length - index}</span>
-              <div className='title'>{file.name}</div>
-            </a>
-          )
-        })
-      }
-    </div>
+    <>
+      <div className='row'>
+        <div className='col-12 d-flex justify-content-end align-items-center'>
+          <button className='btn btn-outline-secondary mx-2' >Zip and send</button>
+          <span className='mx-2'>Total files : {filesList.length}</span>
+        </div>
+      </div>
+      <div className='row'>
+        <div className='col-2'>
+          {
+            filesList.map((file, index) => {
+              return (
+                <>
+                  <FileItem file={file} index={index} pathtype={pathtype} />
+                </>
+              )
+            })
+          }
+        </div>
+        <div className='col-10'>
+          {filesList.length > 0 && <VideoItem 
+          file={filesList[parseInt(fileindex)]}
+          pathtype={pathtype} />}
+        </div>
+      </div>
+    </>
   )
 }
 

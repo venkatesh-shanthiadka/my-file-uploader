@@ -3,8 +3,8 @@ import React from 'react'
 function Home() {
   return (
     <div>
-      <a href="/#/files/input">input</a>
-      <a href="/#/files/output">output</a>
+      <a href="/#/files/0/paths/input">input</a>
+      <a href="/#/files/0/paths/output">output</a>
     </div>
   )
 }

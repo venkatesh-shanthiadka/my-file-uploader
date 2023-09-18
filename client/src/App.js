@@ -9,11 +9,11 @@ import FileList from './components/FileList';
 function App() {
 
   return (
-    <div>
+    <div className='container-fluid'>
       <Router>
         <Routes>
-        <Route exact path="/" element={<Home />} />
-          <Route exact path="/files/:pathtype" element={<FileList />} />
+          <Route exact path="/" element={<Home />} />
+          <Route exact path="/files/:fileindex/paths/:pathtype" element={<FileList />} />
           <Route exact path="/video/:fileName" element={<VideoItem />} />
         </Routes>
       </Router>

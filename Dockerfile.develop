@@ -5,6 +5,7 @@ RUN apt update -y
 
 WORKDIR /workdir
 RUN npm i -g pm2
+RUN apt install sqlite3
 
 COPY package*.json ./
 

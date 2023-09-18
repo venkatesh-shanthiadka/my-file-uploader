@@ -1,11 +1,12 @@
 import React from 'react'
 import { useParams, useNavigate } from 'react-router-dom';
+import useWindowDimensions from '../hooks/useWindowDimensions';
 
-function VideoItem() {
+function VideoItem({ file, pathtype }) {
+  console.log('File: ', file)
   const navigate = useNavigate();
-  let { fileName } = useParams();
-  console.log('fileName:', fileName)
-  const filePath = `/api/videoplayer/${fileName}`
+  const filePath = `/api/videoplayer/${file.name}/paths/${pathtype}`
+  const { height, width } = useWindowDimensions();
 
 
 
@@ -13,7 +14,7 @@ function VideoItem() {
     const isConfirm = window.confirm("Are you sure whant to delete?");
     if (isConfirm) {
       try {
-        let resp = await fetch(`/api/delete/${fileName}`, {
+        let resp = await fetch(`/api/delete/${file.name}`, {
           method: 'DELETE'
         });
         resp = await resp.json();
@@ -28,7 +29,7 @@ function VideoItem() {
 
   async function handleUnzip() {
     try {
-      let resp = await fetch(`/api/unzip/${fileName}`)
+      let resp = await fetch(`/api/unzip/${file.name}`)
       resp = await resp.json();
       navigate('/')
       alert(resp?.message);
@@ -39,18 +40,13 @@ function VideoItem() {
 
 
   return (
-    <div style={{
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      flexDirection: 'column'
-    }}>
-      <h3>{fileName}</h3>
-      <div className='video-item-button-group'>
+    <div>
+      {/* <h3>{fileName}</h3> */}
+      {/* <div className='video-item-button-group'>
         <button className='btn btn-danger' onClick={() => handleDelete()}>Delete</button>
         <button className='btn btn-primary' onClick={() => handleUnzip()}>Unzip</button>
-      </div>
-      <video src={filePath} controls width={'60%'} />
+      </div> */}
+      <video src={filePath} controls width={'100%'} height={height-30} muted />
     </div>
   )
 }
