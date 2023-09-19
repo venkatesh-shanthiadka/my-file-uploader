@@ -1,9 +1,9 @@
 const { typeObj } = require("../utils/constants");
+const fs = require('fs-extra');
+const path = require('path');
 
 module.exports = (req, res) => {
   try {
-    const { pathtype } = req.params;
-    if (!typeObj[pathtype]) throw Error('Invalid pathtype!')
     if (!req.busboy) throw Error("Empty file received!!")
     req.pipe(req.busboy); // Pipe it trough busboy
 
@@ -12,7 +12,7 @@ module.exports = (req, res) => {
         console.log(`Upload of '${filename.filename}' started`);
 
         // Create a write stream of the new file
-        const fstream = fs.createWriteStream(path.join(typeObj[pathtype], filename.filename));
+        const fstream = fs.createWriteStream(path.join(typeObj.outputZip, filename.filename));
         // Pipe it trough
         file.pipe(fstream);
 
@@ -35,6 +35,9 @@ module.exports = (req, res) => {
         res.status(500).json({ message: error?.message })
       }
 
+    });
+    req.busboy.on('error', (error) => {
+      console.log("🚀 ~ file: upload.js:44 ~ req.busboy.on ~ error:", error)
     });
   } catch (error) {
     console.error(`Failed before receiving the file. May be file is empty`);

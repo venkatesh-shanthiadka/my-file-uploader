@@ -10,13 +10,18 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       jobtype: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       filepath: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
+      },
+      filename: {
+        type: Sequelize.TEXT,
+        allowNull: false,
+        unique: true
       },
       jobstatus: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.TEXT
       },
       createdAt: {
         allowNull: false,

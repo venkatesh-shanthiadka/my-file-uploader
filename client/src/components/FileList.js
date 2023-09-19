@@ -10,7 +10,7 @@ function FileList() {
 
   useEffect(() => {
     fetchFiles();
-  }, []);
+  }, [pathtype]);
 
   async function fetchFiles() {
     const resp = await fetch(`/api/files/${pathtype}`);

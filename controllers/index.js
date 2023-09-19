@@ -1,5 +1,6 @@
 module.exports = {
     registerJobs: require('./registerJobs'),
+    jobServiceHandler: require('./jobServiceHandler'),
     listJobs: require('./listJobs'),
     files: require('./files'),
     upload: require('./upload'),

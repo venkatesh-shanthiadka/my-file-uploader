@@ -1,20 +1,53 @@
 {
     "client": "Thunder Client",
     "collectionName": "apis",
-    "dateExported": "2023-09-15T14:15:21.632Z",
+    "dateExported": "2023-09-19T16:16:07.044Z",
     "version": "1.1",
     "folders": [],
     "requests": [
         {
-            "_id": "0aaba30a-583d-4026-be9c-feabbcf1efa2",
-            "colId": "c1b19186-fc83-471e-b1af-93766c009604",
+            "_id": "248ac21e-c8f6-4aff-8a2c-bf61ef3f1134",
+            "colId": "97cf4b12-3edc-45c5-bfc2-20b46bfa16c2",
             "containerId": "",
             "name": "http://localhost:31102/api/files/input",
             "url": "http://localhost:31102/api/files/input",
             "method": "GET",
             "sortNum": 10000,
-            "created": "2023-09-15T14:12:16.898Z",
-            "modified": "2023-09-15T14:12:16.898Z",
+            "created": "2023-09-19T15:49:30.159Z",
+            "modified": "2023-09-19T15:49:30.159Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "d6c898ed-2ed0-4110-aa16-735bb7ba6111",
+            "colId": "97cf4b12-3edc-45c5-bfc2-20b46bfa16c2",
+            "containerId": "",
+            "name": "register-job",
+            "url": "http://localhost:31102/api/jobs/register",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2023-09-19T15:49:57.431Z",
+            "modified": "2023-09-19T16:08:27.136Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"files\": [\"1_1 Rajan _ Venkatesh - Finalize Insights _ Microsoft Teams 2023-04-27 13-33-27.mp4\"],\n  \"pathType\": \"input\",\n  \"jobType\": \"ZIP_ORIGINAL_FILE,UPLOAD_ZIPPED_FILE,UNZIP_ZIPPED_FILE,DELETE_ZIPPED_FILE,DELETE_ORIGINAL_FILE\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "0ffd7a94-b513-4b94-be84-6553cd6dc292",
+            "colId": "97cf4b12-3edc-45c5-bfc2-20b46bfa16c2",
+            "containerId": "",
+            "name": "init-job",
+            "url": "http://localhost:31102/api/job/handler/init",
+            "method": "GET",
+            "sortNum": 40000,
+            "created": "2023-09-19T16:15:32.109Z",
+            "modified": "2023-09-19T16:16:01.971Z",
             "headers": [],
             "params": [],
             "tests": []

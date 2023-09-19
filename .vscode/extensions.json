@@ -1,6 +1,7 @@
 {
     "recommendations": [
         "editorconfig.editorconfig",
-        "rangav.vscode-thunder-client"
+        "rangav.vscode-thunder-client",
+        "ChakrounAnas.turbo-console-log"
     ]
 }

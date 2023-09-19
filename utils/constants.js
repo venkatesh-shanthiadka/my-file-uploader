@@ -1,21 +1,43 @@
 const path = require("path");
-const uploadPath = path.join('/tmp/upload-dir'); // Register the upload path
-const inputPath = path.join('/tmp/input-dir'); // Register the upload path
+const uploadPath = path.join('/tmp/upload-dir');
+const inputPath = path.join('/tmp/input-dir');
+const inputZipPath = path.join('/tmp/zip/input-dir');
+const outputZipPath = path.join('/tmp/zip/upload-dir');
 
 const typeObj = {
   input: inputPath,
-  output: uploadPath
+  inputzip: inputZipPath,
+  output: uploadPath,
+  outputZip: outputZipPath,
 }
 
 const jobTypes = {
   JOB_CREATED: "JOB_CREATED",
-  JOB_SUCCESS: "JOB_SUCCESS",
-  JOB_FAILED: "JOB_FAILED"
+  // JOB_SUCCESS: "JOB_SUCCESS",
+  // JOB_FAILED: "JOB_FAILED",
+  
+  ZIP_ORIGINAL_FILE: "ZIP_ORIGINAL_FILE",
+  ZIP_ORIGINAL_FILE_SUCCESS: "ZIP_ORIGINAL_FILE_SUCCESS",
+  ZIP_ORIGINAL_FILE_FAILURE: "ZIP_ORIGINAL_FILE_FAILURE",
+
+  UPLOAD_ZIPPED_FILE: "UPLOAD_ZIPPED_FILE",
+  UPLOAD_ZIPPED_FILE_SUCCESS: "UPLOAD_ZIPPED_FILE_SUCCESS",
+  UPLOAD_ZIPPED_FILE_FAILURE: "UPLOAD_ZIPPED_FILE_FAILURE",
+
+  UNZIP_ZIPPED_FILE: "UNZIP_ZIPPED_FILE",
+  UNZIP_ZIPPED_FILE_SUCCESS: "UNZIP_ZIPPED_FILE_SUCCESS",
+  UNZIP_ZIPPED_FILE_FAILURE: "UNZIP_ZIPPED_FILE_FAILURE",
+
+  DELETE_ZIPPED_FILE: "DELETE_ZIPPED_FILE",
+  DELETE_ZIPPED_FILE_SUCCESS: "DELETE_ZIPPED_FILE_SUCCESS",
+  DELETE_ZIPPED_FILE_FAILURE: "DELETE_ZIPPED_FILE_FAILURE",
+
+  DELETE_ORIGINAL_FILE: "DELETE_ORIGINAL_FILE",
+  DELETE_ORIGINAL_FILE_SUCCESS: "DELETE_ORIGINAL_FILE_SUCCESS",
+  DELETE_ORIGINAL_FILE_FAILURE: "DELETE_ORIGINAL_FILE_FAILURE"
 }
 
 module.exports = {
   typeObj,
-  uploadPath,
-  inputPath,
   jobTypes
 }

@@ -14,9 +14,14 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Job.init({
-    jobtype: DataTypes.STRING,
-    filepath: DataTypes.STRING,
-    jobstatus: DataTypes.BOOLEAN
+    jobtype: DataTypes.TEXT,
+    filepath: DataTypes.TEXT,
+    filename: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      unique: true
+    },
+    jobstatus: DataTypes.TEXT
   }, {
     sequelize,
     modelName: 'Job',

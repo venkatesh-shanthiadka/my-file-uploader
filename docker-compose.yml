@@ -1,0 +1,33 @@
+version: '3'
+services:
+
+  myfileuploader:
+    build:
+      context: ./my-file-upload
+      dockerfile: Dockerfile
+    volumes:
+      - /venkatesh_1tb_disk/upload-dir:/tmp/upload-dir
+    ports:
+      - 31100:31100
+    container_name: myfileuploader
+    # command: tail -f /dev/null
+    restart: unless-stopped
+
+  myfileuploaderdev:
+    build:
+      context: ./my-file-upload
+      dockerfile: Dockerfile.develop
+    volumes:
+      - ./my-file-upload:/workdir
+      - /workdir/node_modules
+      - /venkatesh_1tb_disk/file-upload-testing/upload-dir:/tmp/upload-dir
+      - /venkatesh_1tb_disk/file-upload-testing/input-dir:/tmp/input-dir
+      # - "//venkatesh_1tb_disk/virtualbox/shared/Lucifer S01 Season 1 Complete HDTV XviD-AFG:/tmp/upload-dir"
+    ports:
+      - 31101:31101
+      - 31102:31102
+    environment:
+      - 'BACKEND_SERVICE_HOST=http://localhost:31102'
+    container_name: myfileuploaderdev
+    command: tail -f /dev/null
+    # restart: unless-stopped

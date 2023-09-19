@@ -7,7 +7,7 @@ WORKDIR /workdir
 RUN npm i -g pm2
 RUN apt install sqlite3
 
-COPY package*.json ./
+COPY package.json package.json
 
 RUN npm install --verbose
 COPY . .

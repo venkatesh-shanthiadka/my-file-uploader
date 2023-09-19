@@ -1,8 +1,10 @@
+const { typeObj } = require("../utils/constants");
+
 module.exports = async () => {
   try {
-    const fileName = req.params.filename;
+    const { fileName, pathtype } = req.params;
     console.log('Delete request received fileName: ', fileName)
-    const filePath = path.join(uploadPath, fileName);
+    const filePath = path.join(typeObj[pathtype], fileName);
     fs.unlinkSync(filePath);
     res.status(200).json({ message: "Delete success" })
   } catch (error) {
