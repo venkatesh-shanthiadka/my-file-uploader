@@ -70,21 +70,29 @@ async function processJobTypes(jobTypes, job) {
 
 function zipFile(jobObj) {
   return new Promise((resolve, reject) => {
-    const sourceFilePath = jobObj.filepath;
-    const compressedFilePath = path.join(contstants.typeObj.inputzip, `${jobObj.filename}.gz`);
-    const readStream = fs.createReadStream(sourceFilePath);
-    const writeStream = fs.createWriteStream(compressedFilePath);
-    const gzip = zlib.createGzip();
-    readStream.pipe(gzip).pipe(writeStream);
+    try {
+      if (!fs.existsSync(jobObj.filepath)) {
+        throw Error(`File '${jobObj.filepath}' don't exists or invalid`)
+      }
+      const sourceFilePath = jobObj.filepath;
+      const compressedFilePath = path.join(contstants.typeObj.inputzip, `${jobObj.filename}.gz`);
+      const readStream = fs.createReadStream(sourceFilePath);
+      const writeStream = fs.createWriteStream(compressedFilePath);
+      const gzip = zlib.createGzip();
+      readStream.pipe(gzip).pipe(writeStream);
 
-    writeStream.on('finish', () => {
-      console.log('File has been compressed successfully.');
-      resolve(compressedFilePath);
-    });
-    writeStream.on('error', (error) => {
-      console.error("🚀 ~ file: index.js ~ writeStream.on ~ error:", error)
+      writeStream.on('finish', () => {
+        console.log('File has been compressed successfully.');
+        resolve(compressedFilePath);
+      });
+      writeStream.on('error', (error) => {
+        console.error("🚀 ~ file: index.js ~ writeStream.on ~ error:", error)
+        reject(error)
+      })
+    } catch (error) {
+      console.log("🚀 ~ file: index.js:93 ~ returnnewPromise ~ error:", error)
       reject(error)
-    })
+    }
   })
 }
 
