@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import FileItem from './FileItem';
 import VideoItem from './VideoItem';
+import axios from 'axios';
 
 function FileList() {
 
@@ -19,12 +20,36 @@ function FileList() {
     console.log('resp1', resp1);
   }
 
+  const registerJob = async () => {
+    try {
+      const requestData = filesList.filter(i => i.active).map(i => i.name)
+      console.log('requestData: ', requestData)
+      const url = `/api/jobs/register`
+      const request_config = {
+        method: "post",
+        url,
+        headers: {
+          "Content-Type": "application/json"
+        },
+        data: {
+          files: requestData,
+          pathType: "input",
+          jobType: "ZIP_ORIGINAL_FILE,UPLOAD_ZIPPED_FILE,UNZIP_ZIPPED_FILE,DELETE_ZIPPED_FILE,DELETE_ORIGINAL_FILE"
+        }
+      };
+      const resp = await axios(request_config);
+      console.log('resp: ', resp);
+      alert('Job registered')
+    } catch (error) {
+      alert(`registerJob: ${error?.message}`)
+    }
+  }
 
   return (
     <>
       <div className='row'>
         <div className='col-12 d-flex justify-content-end align-items-center'>
-          <button className='btn btn-outline-secondary mx-2' >Zip and send</button>
+          {pathtype === 'input' && <button className='btn btn-outline-secondary mx-2' onClick={registerJob}>Zip and send</button>}
           <span className='mx-2'>Total files : {filesList.length}</span>
         </div>
       </div>
@@ -32,6 +57,7 @@ function FileList() {
         <div className='col-2'>
           {
             filesList.map((file, index) => {
+              file.active = false;
               return (
                 <>
                   <FileItem file={file} index={index} pathtype={pathtype} />
