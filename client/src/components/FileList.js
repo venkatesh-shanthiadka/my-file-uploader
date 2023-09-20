@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import FileItem from './FileItem';
 import VideoItem from './VideoItem';
 import axios from 'axios';
+import { getValidHost } from '../utils/helper';
 
 function FileList() {
 
@@ -14,7 +15,8 @@ function FileList() {
   }, [pathtype]);
 
   async function fetchFiles() {
-    const resp = await fetch(`/api/files/${pathtype}`);
+    const url = `${getValidHost[pathtype]}/api/files/${pathtype}`;
+    const resp = await fetch(url);
     const resp1 = await resp.json();
     setFilesList(resp1?.files || [])
     console.log('resp1', resp1);

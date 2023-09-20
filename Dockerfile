@@ -5,7 +5,7 @@ RUN apk update
 
 WORKDIR /workdir
 RUN npm i -g pm2
-RUN apt install sqlite3
+RUN apk add --no-cache sqlite
 
 COPY package*.json ./
 

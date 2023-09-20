@@ -1,6 +1,7 @@
-const express = require('express');         // Express Web Server
-const busboy = require('connect-busboy');   // Middleware to handle the file upload https:/
-const path = require('path');               // Used for manipulation with path
+const express = require('express');
+cors = require('cors')
+const busboy = require('connect-busboy');
+const path = require('path');
 const fs = require('fs-extra');
 const extract = require('extract-zip');
 const controllers = require('./controllers');
@@ -9,6 +10,7 @@ const db = require('./models');
 
 const app = express(); // Initialize the express web server
 
+app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded());
@@ -20,7 +22,7 @@ app.use(busboy({
 
 fs.ensureDir(typeObj.input);
 fs.ensureDir(typeObj.inputzip);
-fs.ensureDir(typeObj.output); 
+fs.ensureDir(typeObj.output);
 fs.ensureDir(typeObj.outputZip);
 
 app.get('/api/videoplayer/:fileName/paths/:pathtype', controllers.videoplayer);
