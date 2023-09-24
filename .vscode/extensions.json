@@ -2,6 +2,7 @@
     "recommendations": [
         "editorconfig.editorconfig",
         "rangav.vscode-thunder-client",
-        "ChakrounAnas.turbo-console-log"
+        "ChakrounAnas.turbo-console-log",
+        "eamodio.gitlens"
     ]
 }
