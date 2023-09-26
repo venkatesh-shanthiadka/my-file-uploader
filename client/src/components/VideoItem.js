@@ -1,11 +1,12 @@
 import React from 'react'
+import { getValidHost } from '../utils/helper';
 import { useParams, useNavigate } from 'react-router-dom';
 import useWindowDimensions from '../hooks/useWindowDimensions';
 
 function VideoItem({ file, pathtype }) {
   console.log('File: ', file)
   const navigate = useNavigate();
-  const filePath = `/api/videoplayer/${file.name}/paths/${pathtype}`
+  const filePath = `${getValidHost[pathtype]}/api/videoplayer/${file.name}/paths/${pathtype}`
   const { height, width } = useWindowDimensions();
 
 

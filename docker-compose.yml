@@ -3,26 +3,28 @@ services:
 
   myfileuploader:
     build:
-      context: ./my-file-upload
+      context: ./
       dockerfile: Dockerfile
     volumes:
-      - /venkatesh_1tb_disk/upload-dir:/tmp/upload-dir
+      - /mnt/c/Users/vshanthi/Videos/Captures:/tmp/input-dir
+      - /mnt/c/Users/vshanthi/Videos/Captures/zip:/tmp/zip/input-dir
     ports:
       - 31100:31100
+    environment:
+      - 'BACKEND_SERVICE_HOST=http://192.168.29.236:31100'
     container_name: myfileuploader
     # command: tail -f /dev/null
     restart: unless-stopped
 
   myfileuploaderdev:
     build:
-      context: ./my-file-upload
+      context: ./
       dockerfile: Dockerfile.develop
     volumes:
-      - ./my-file-upload:/workdir
+      - ./:/workdir
       - /workdir/node_modules
-      - /venkatesh_1tb_disk/file-upload-testing/upload-dir:/tmp/upload-dir
-      - /venkatesh_1tb_disk/file-upload-testing/input-dir:/tmp/input-dir
-      # - "//venkatesh_1tb_disk/virtualbox/shared/Lucifer S01 Season 1 Complete HDTV XviD-AFG:/tmp/upload-dir"
+      # - /venkatesh_1tb_disk/file-upload-testing/upload-dir:/tmp/upload-dir
+      - /mnt/c/Users/vshanthi/Videos/Captures:/tmp/input-dir
     ports:
       - 31101:31101
       - 31102:31102

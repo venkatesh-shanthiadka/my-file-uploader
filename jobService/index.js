@@ -97,6 +97,12 @@ function zipFile(jobObj) {
 }
 
 async function uploadFile(jobObj) {
+  const proxiesToDelete = [
+    'HTTPS_PROXY', 'HTTP_PROXY', 'http_proxy', 'https_proxy'
+  ]
+  for (let proxy of proxiesToDelete) {
+    delete process.env[proxy]
+  }
   const url = `${process.env.BACKEND_SERVICE_HOST}/api/upload`
   const form_data = new NodeFormData();
   form_data.append('file', fs.createReadStream(jobObj.zipFilePath), path.basename(jobObj.zipFilePath));
