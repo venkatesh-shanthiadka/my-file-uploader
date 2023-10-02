@@ -3,6 +3,7 @@
         "editorconfig.editorconfig",
         "rangav.vscode-thunder-client",
         "ChakrounAnas.turbo-console-log",
-        "eamodio.gitlens"
+        "eamodio.gitlens",
+        "alexcvzz.vscode-sqlite"
     ]
 }

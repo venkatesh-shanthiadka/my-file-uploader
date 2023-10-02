@@ -8,6 +8,7 @@ services:
     volumes:
       - /mnt/c/Users/vshanthi/Videos/Captures:/tmp/input-dir
       - /mnt/c/Users/vshanthi/Videos/Captures/zip:/tmp/zip/input-dir
+      - ./my-file-upload-db:/tmp/my-file-upload-db
     ports:
       - 31100:31100
     environment:

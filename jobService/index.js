@@ -8,7 +8,7 @@ const contstants = require('../utils/constants')
 main()
 
 async function main() {
-  console.log('Inside main')
+  console.log('Inside main of JobService/index.js')
   console.log('New job service with process.pid: ', process.pid)
   process.on('message', async ({ job }) => {
     console.log("🚀 ~ file: index.js:14 ~ process.on ~ job id:", job.id)
