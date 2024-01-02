@@ -3,7 +3,7 @@ services:
 
   myfileuploader:
     build:
-      context: ./my-file-upload
+      context: ./
       dockerfile: Dockerfile
     volumes:
       - /venkatesh_1tb_disk/upload-dir:/tmp/upload-dir
@@ -15,7 +15,7 @@ services:
 
   myfileuploaderdev:
     build:
-      context: ./my-file-upload
+      context: ./
       dockerfile: Dockerfile.develop
     volumes:
       - ./my-file-upload:/workdir
