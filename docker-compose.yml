@@ -18,7 +18,7 @@ services:
       context: ./
       dockerfile: Dockerfile.develop
     volumes:
-      - ./my-file-upload:/workdir
+      - ./:/workdir
       - /workdir/node_modules
       - /venkatesh_1tb_disk/file-upload-testing/upload-dir:/tmp/upload-dir
       - /venkatesh_1tb_disk/file-upload-testing/input-dir:/tmp/input-dir

@@ -55,8 +55,8 @@ function FileList() {
           <span className='mx-2'>Total files : {filesList.length}</span>
         </div>
       </div>
-      <div className='row'>
-        <div className='col-2'>
+      <div className='row h-10'>
+        <div className='col-2 h-90' style={{ height: '95dvh', overflowY: 'scroll' }}>
           {
             filesList.map((file, index) => {
               file.active = false;
@@ -68,10 +68,10 @@ function FileList() {
             })
           }
         </div>
-        <div className='col-10'>
+        <div className='col-10 h-90' style={{ overflowY: 'hidden' }}>
           {filesList.length > 0 && <VideoItem 
           file={filesList[parseInt(fileindex)]}
-          pathtype={pathtype} />}
+          pathtype={pathtype} style={{ height: 'inherit'}} />}
         </div>
       </div>
     </>

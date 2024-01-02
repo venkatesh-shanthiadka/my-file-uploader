@@ -15,7 +15,10 @@ function FileItem({ file, index, pathtype }) {
       </div>
       <div className='col-9 border-bottom pb-2'>
         <span className='px-2'>{index + 1}</span>
-        <a href={urlPath}>
+        <a style={{ 
+          color: 'white', 
+          fontWeight: 'bolder',
+          letterSpacing: '0.1rem' }} href={urlPath}>
           {file.name}
         </a>
       </div>
