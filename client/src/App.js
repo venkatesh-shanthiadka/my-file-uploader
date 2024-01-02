@@ -9,7 +9,7 @@ import FileList from './components/FileList';
 function App() {
 
   return (
-    <div className='container-fluid'>
+    <div className='container-fluid h-100'>
       <Router>
         <Routes>
           <Route exact path="/" element={<Home />} />

@@ -49,14 +49,14 @@ function FileList() {
 
   return (
     <>
-      <div className='row'>
+      <div className='row' style={{height: '5dvh'}}>
         <div className='col-12 d-flex justify-content-end align-items-center'>
           {pathtype === 'input' && <button className='btn btn-outline-secondary mx-2' onClick={registerJob}>Zip and send</button>}
           <span className='mx-2'>Total files : {filesList.length}</span>
         </div>
       </div>
-      <div className='row'>
-        <div className='col-2'>
+      <div className='row' style={{height: "95dvh"}}>
+        <div className='col-2 h-100' style={{ overflowY: 'scroll' }}>
           {
             filesList.map((file, index) => {
               file.active = false;
@@ -68,10 +68,10 @@ function FileList() {
             })
           }
         </div>
-        <div className='col-10'>
+        <div className='col-10 h-100' style={{ overflowY: 'hidden' }}>
           {filesList.length > 0 && <VideoItem 
           file={filesList[parseInt(fileindex)]}
-          pathtype={pathtype} />}
+          pathtype={pathtype} style={{ height: 'inherit'}} />}
         </div>
       </div>
     </>

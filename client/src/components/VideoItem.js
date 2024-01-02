@@ -41,14 +41,14 @@ function VideoItem({ file, pathtype }) {
 
 
   return (
-    <div>
+    <>
       {/* <h3>{fileName}</h3> */}
       {/* <div className='video-item-button-group'>
         <button className='btn btn-danger' onClick={() => handleDelete()}>Delete</button>
         <button className='btn btn-primary' onClick={() => handleUnzip()}>Unzip</button>
       </div> */}
-      <video src={filePath} controls width={'100%'} height={height-30} muted />
-    </div>
+      <video src={filePath} controls height={'100%'} width={'100%'} />
+    </>
   )
 }
 
